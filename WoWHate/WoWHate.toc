@@ -1,0 +1,7 @@
+## Interface: 60100
+## Title: WoW Hates Aurorraa
+## Author: Scott Lee
+## Version: 0.1b
+## Notes: Counts how many times people get targetted by shit.  |nIn honor of Aurorraa-BleedingHollow |n(our priest who got targetted by just about everyting that ever was).
+
+WoWHate.lua
