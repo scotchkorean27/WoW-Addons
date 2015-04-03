@@ -1,0 +1,6 @@
+## Interface: 60100
+## Title: SPELLIDCONV
+## Author: Scott Lee
+## Version 0.1b
+
+CTimer.lua

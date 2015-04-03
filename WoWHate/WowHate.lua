@@ -73,6 +73,8 @@ local function registerAura(self,event, ...)
 	if(modloaded == false) then
 		if(destName == "Kargath Bladefist") then
 			debuffs = loadKargathModule();
+		elseif(destName == "Tectus") then
+			debuffs = loadTectusModule();
 		elseif(destName == "Dungeoneer's Training Dummy") then
 			debuffs = loadTestModule();
 		end;
