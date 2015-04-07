@@ -2,6 +2,7 @@ raidg = {};
 debuffs = {};
 rdbtable = {};
 pasttable = {};
+devmod = false;
 fname = "";
 incombat = false;
 modloaded = false;
@@ -40,7 +41,7 @@ end;
 local function makeTestTable()
 	local t = {};
 	local uname = UnitName("player");
-	print("Adding entry for: " .. uname);
+	--print("Adding entry for: " .. uname);
 	t[uname] = {};
 	return t;
 end;
@@ -50,7 +51,7 @@ local function reportTable(raid, channel)
 		SendChatMessage("People targetted by: " .. key, channel);
 		for key2, value2 in pairs(value) do
 			if(value2 > 10) then
-				print(key2 .. ": " .. value2);
+				SendChatMessage(key2 .. ": " .. value2, channel);
 			end;
 		end;
 		for i = 10, 1, -1 do
@@ -60,7 +61,7 @@ local function reportTable(raid, channel)
 				end;
 			end;
 		end
-		print(" ");
+		SendChatMessage(" ", channel);
 	end;
 end;
 local function printTable(raid, debuff)
@@ -140,11 +141,13 @@ local function registerAura(self,event, ...)
 				--raidg[destName][spellName] = raidg[destName][spellName] + 1;
 		if(modloaded == true) then
 			local name, rank, icon, count, dispel, duration, expires, caster, steal, console, ID, canapp, boss, v1, v2, v3 = UnitDebuff(destName, spellName);
-			if(name ~= nil) then
+			if(name ~= nil and devmod == true) then
 				print(name .. " " .. ID .. " " ..destName);
 			end;
 			if(name ~= nil and debuffs[ID] ~= nil and rdbtable[destName][spellName] == false) then
-				print(destName .. " " .. spellName);
+				if(devmod == true) then
+					print(destName .. " " .. spellName);
+				end;
 				if(raidg[destName][spellName] == nil) then
 					raidg[destName][spellName] = 0;
 				end;
@@ -152,14 +155,18 @@ local function registerAura(self,event, ...)
 				rdbtable[destName][spellName] = true;
 			elseif(name == nil and rdbtable[destName][spellName] ~= nil and rdbtable[destName][spellName] == true) then
 				rdbtable[destName][spellName] = false;
-				print(spellName .. " has fallen off " .. destName);
+				if(devmod == true) then
+					print(spellName .. " has fallen off " .. destName);
+				end;
 			end;
 		end;
 	end;
 end;
 
 local function enterCombat(self, event, ...)
-	print("Generating Table...");
+	if(devmod == true) then
+		print("Generating Table...");
+	end;
 	incombat = true;
 	if(IsInRaid() == true) then
 		raidg = makeRaidTable();
@@ -190,7 +197,9 @@ local function modloader(msg, editbox)
 	elseif msg == 'irep' then
 		reportTable(pasttable, "RAID");
 	elseif msg == 'trep' then
-		reportTable(pasttable, "SAY")
+		reportTable(pasttable, "SAY");
+	elseif msg == 'devmode' then
+		devmod = true;
 	elseif msg == 'clear' then
 		modloaded = false;
 		raidg = {};
