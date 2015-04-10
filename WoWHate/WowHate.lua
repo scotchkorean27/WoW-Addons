@@ -1,21 +1,36 @@
-raidg = {};
-debuffs = {};
-rdbtable = {};
-pasttable = {};
-devmod = false;
-fname = "";
-incombat = false;
-modloaded = false;
-local frame = CreateFrame("FRAME", "ScottFrame");
-local frame2 = CreateFrame("FRAME", "enterframe");
-local frame3 = CreateFrame("FRAME", "exitframe");
-frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
-frame2:RegisterEvent("PLAYER_REGEN_DISABLED");
-frame3:RegisterEvent("PLAYER_REGEN_ENABLED");
+WHA_raidg = {};
+WHA_debuffs = {};
+WHA_rdbtable = {};
+WHA_pasttable = {};
+WHA_devmod = false;
+WHA_fname = "";
+WHA_incombat = false;
+WHA_modloaded = false;
+local WHA_frame = CreateFrame("FRAME", "WHA_RaidFrame");
+local WHA_frame2 = CreateFrame("FRAME", "WHA_enterframe");
+local WHA_frame3 = CreateFrame("FRAME", "WHA_exitframe");
+WHA_frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+WHA_frame2:RegisterEvent("PLAYER_REGEN_DISABLED");
+WHA_frame3:RegisterEvent("PLAYER_REGEN_ENABLED");
 
 
 
-local function buildRDBTable(raid, debuff)
+local function WHA_raidInCombat()
+	local gnum = GetNumGroupMembers();
+	for i = 1, gnum, 1 do
+		local s = "raid" .. i;
+		local uname = GetUnitName(s, true);
+		if(UnitAffectingCombat(uname) == true) then
+			return true;
+		end;
+	end;	
+	if(IsInRaid() == false and UnitAffectingCombat("Player") == true) then
+		return true;
+	end;
+	return false;
+end;
+
+local function WHA_buildRDBTable(raid, debuff)
 	local t = {};
 	for key, value in pairs(raid) do
 		t[key] = {};
@@ -27,7 +42,7 @@ local function buildRDBTable(raid, debuff)
 	end;
 	return t;
 end;
-local function makeRaidTable()
+local function WHA_makeRaidTable()
 	local gnum = GetNumGroupMembers();
 	local t = {};
 		for i = 1, gnum, 1 do
@@ -38,15 +53,15 @@ local function makeRaidTable()
 	end;
 	return t;
 end;
-local function makeTestTable()
+local function WHA_makeTestTable()
 	local t = {};
 	local uname = UnitName("player");
 	--print("Adding entry for: " .. uname);
 	t[uname] = {};
 	return t;
 end;
-local function reportTable(raid, channel)
-	SendChatMessage("WoW Hates Aurorraa report for: " .. fname ,channel);
+local function WHA_reportTable(raid, channel)
+	SendChatMessage("WoW Hates Aurorraa report for: " .. WHA_fname ,channel);
 	for key, value in pairs(raid) do	
 		SendChatMessage("People targetted by: " .. key, channel);
 		for key2, value2 in pairs(value) do
@@ -64,17 +79,8 @@ local function reportTable(raid, channel)
 		SendChatMessage(" ", channel);
 	end;
 end;
-local function printTable(raid, debuff)
-	print("|cff00ffffValues for " .. fname);
-	local invraid = {};
-	for key, value in pairs(debuff) do
-		invraid[value] = {};
-	end;
-	for player, pdset in pairs(raid) do
-		for dname, count in pairs(pdset) do
-			invraid[dname][player] = count;
-		end;
-	end;
+local function WHA_printTable(invraid)
+	print("|cff00ffffWoW Hates Aurorraa report for " .. WHA_fname);
 	for key, value in pairs(invraid) do	
 		print("|cffff0000People targetted by: " .. key);
 		for key2, value2 in pairs(value) do
@@ -91,122 +97,166 @@ local function printTable(raid, debuff)
 		end
 		print(" ");
 	end;
+end;
+	
+local function WHA_makeResult(raid, debuff)
+	
+	local invraid = {};
+	for key, value in pairs(debuff) do
+		invraid[value] = {};
+	end;
+	for player, pdset in pairs(raid) do
+		for dname, count in pairs(pdset) do
+			invraid[dname][player] = count;
+		end;
+	end;
 	return invraid;
 end;
 
-local function registerAura(self,event, ...)
+local function WHA_exitCombat(self, event, ...)
+	WHA_incombat = false;
+	if(WHA_modloaded == true) then
+		WHA_pasttable = WHA_makeResult(WHA_raidg, WHA_debuffs);
+		WHA_printTable(WHA_pasttable);
+		WHA_modloaded = false;
+	end;
+	WHA_debuffs = {};
+end;
+
+local function WHA_registerAura(self,event, ...)
 	
 	local timestamp, etype, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount, overkill, school, resisted, blocked, absorbed, critical = select(1, ...);
-	if(modloaded == false and incombat == true) then
+	if(WHA_modloaded == false and WHA_incombat == true) then
 		if(destName == "Kargath Bladefist") then
-			debuffs, fname = loadKargathModule();
-			rdbtable = buildRDBTable(raidg, debuffs);
+			WHA_debuffs, WHA_fname = WHA_loadKargathModule();
+			WHA_BUP(WHA_fname);
+			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
 		elseif(destName == "Blackhand") then
-			debuffs, fname = loadBlackHandModule();
-			rdbtable = buildRDBTable(raidg, debuffs);
+			WHA_debuffs, WHA_fname = WHA_loadBlackHandModule();
+			WHA_BUP(WHA_fname);
+			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
 		elseif(destName == "Marak the Blooded") then
-			debuffs, fname = loadMaidsModule();
-			rdbtable = buildRDBTable(raidg, debuffs);
+			WHA_debuffs, WHA_fname = WHA_loadMaidsModule();
+			WHA_BUP(WHA_fname);
+			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
+		elseif(destName == "Operator Thogar") then
+			WHA_debuffs, WHA_fname = WHA_loadOperatorModule();
+			WHA_BUP(WHA_fname);
+			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
 		elseif(destName == "Beastlord Darmac") then
-			debuffs, fname = loadBeastLordModule();
-			rdbtable = buildRDBTable(raidg, debuffs);
+			WHA_debuffs, WHA_fname = WHA_loadBeastLordModule();
+			WHA_BUP(WHA_fname);
+			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
 		elseif(destName == "Flamebender Ka'graz") then
-			debuffs, fname = loadFlameBenderModule();
-			rdbtable = buildRDBTable(raidg, debuffs);
+			WHA_debuffs, WHA_fname = WHA_loadFlameBenderModule();
+			WHA_BUP(WHA_fname);
+			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
 		elseif(destName == "Gruul") then
-			debuffs, fname = loadGruulModule();
-			rdbtable = buildRDBTable(raidg, debuffs);
+			WHA_debuffs, WHA_fname = WHA_loadGruulModule();
+			WHA_BUP(WHA_fname);
+			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
 		elseif(destName == "Foreman Feldspar") then
-			debuffs, fname = loadBFurnModule();
-			rdbtable = buildRDBTable(raidg, debuffs);
+			WHA_debuffs, WHA_fname = WHA_loadBFurnModule();
+			WHA_BUP(WHA_fname);
+			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
 		elseif(destName == "Tectus") then
-			debuffs, fname = loadTectusModule();
-			rdbtable = buildRDBTable(raidg, debuffs);
+			WHA_debuffs, WHA_fname = WHA_loadTectusModule();
+			WHA_BUP(WHA_fname);
+			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
 		elseif(destName == "Dungeoneer's Training Dummy") then
-			debuffs, fname = loadTestModule();
-			rdbtable = buildRDBTable(raidg, debuffs);
+			WHA_debuffs, WHA_fname = WHA_loadTestModule();
+			WHA_BUP(WHA_fname);
+			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
 		end;
 	end;
-	if((etype == 'SPELL_AURA_APPLIED' or etype == 'SPELL_AURA_REMOVED') and amount == 'DEBUFF' and incombat == true and (destName == GetUnitName("player") or UnitInRaid(destName))) then
-		--if(modloaded == false and etype == 'SPELL_AURA_APPLIED') then
+	if((etype == 'SPELL_AURA_APPLIED' or etype == 'SPELL_AURA_REMOVED') and amount == 'DEBUFF' and WHA_incombat == true and (destName == GetUnitName("player") or UnitInRaid(destName))) then
+		--if(WHA_modloaded == false and etype == 'SPELL_AURA_APPLIED') then
 			--print(destName .. " " .. spellName);
 			--local name, rank, icon, count, dispel, duration, expires, caster, steal, console, ID, canapp, boss, v1, v2, v3 = UnitDebuff(destName, spellName);
 			--responsetime = duration + (GetTime() - expires);
 			--print("response time is" .. responsetime);
-			--debuffs[ID] = spellName;
+			--WHA_debuffs[ID] = spellName;
 				--print(name .. ID );
-				--if(raidg[destName][spellName] == nil) then
-					--raidg[destName][spellName] = 0;
+				--if(WHA_raidg[destName][spellName] == nil) then
+					--WHA_raidg[destName][spellName] = 0;
 				--end;
-				--raidg[destName][spellName] = raidg[destName][spellName] + 1;
-		if(modloaded == true) then
+				--WHA_raidg[destName][spellName] = WHA_raidg[destName][spellName] + 1;
+		if(WHA_modloaded == true) then
 			local name, rank, icon, count, dispel, duration, expires, caster, steal, console, ID, canapp, boss, v1, v2, v3 = UnitDebuff(destName, spellName);
-			if(name ~= nil and devmod == true) then
+			if(name ~= nil and WHA_devmod == true) then
 				print(name .. " " .. ID .. " " ..destName);
 			end;
-			if(name ~= nil and debuffs[ID] ~= nil and rdbtable[destName][spellName] == false) then
-				if(devmod == true) then
+			if(name ~= nil and WHA_debuffs[ID] ~= nil and WHA_rdbtable[destName][spellName] == false) then
+				if(WHA_devmod == true) then
 					print(destName .. " " .. spellName);
 				end;
-				if(raidg[destName][spellName] == nil) then
-					raidg[destName][spellName] = 0;
+				if(WHA_raidg[destName][spellName] == nil) then
+					WHA_raidg[destName][spellName] = 0;
 				end;
-				raidg[destName][spellName] = raidg[destName][spellName] + 1;
-				rdbtable[destName][spellName] = true;
-			elseif(name == nil and rdbtable[destName][spellName] ~= nil and rdbtable[destName][spellName] == true) then
-				rdbtable[destName][spellName] = false;
-				if(devmod == true) then
+				WHA_raidg[destName][spellName] = WHA_raidg[destName][spellName] + 1;
+				WHA_rdbtable[destName][spellName] = true;
+			elseif(name == nil and WHA_rdbtable[destName][spellName] ~= nil and WHA_rdbtable[destName][spellName] == true) then
+				WHA_rdbtable[destName][spellName] = false;
+				if(WHA_devmod == true) then
 					print(spellName .. " has fallen off " .. destName);
 				end;
 			end;
 		end;
 	end;
+	if(WHA_raidInCombat() == false) then
+		WHA_exitCombat();
+	end;
 end;
 
-local function enterCombat(self, event, ...)
-	if(devmod == true) then
+local function WHA_enterCombat(self, event, ...)
+	if(WHA_devmod == true) then
 		print("Generating Table...");
 	end;
-	incombat = true;
+	WHA_incombat = true;
 	if(IsInRaid() == true) then
-		raidg = makeRaidTable();
+		WHA_raidg = WHA_makeRaidTable();
 	else
-		raidg = makeTestTable();
+		WHA_raidg = WHA_makeTestTable();
 	end;
 end;
 
-local function exitCombat(self, event, ...)
-	incombat = false;
-	if(modloaded == true) then
-		pasttable = printTable(raidg, debuffs);
-		modloaded = false;
+local function WHA_chexitCombat()
+	if(WHA_raidInCombat() == false) then
+		WHA_exitCombat();
 	end;
-	debuffs = {};
 end;
 
-frame:SetScript("OnEvent", registerAura);
-frame2:SetScript("OnEvent", enterCombat);
-frame3:SetScript("OnEvent", exitCombat);
-
+WHA_frame:SetScript("OnEvent", WHA_registerAura);
+WHA_frame2:SetScript("OnEvent", WHA_enterCombat);
+WHA_frame3:SetScript("OnEvent", WHA_chexitCombat);
 
 
 SLASH_LOADMOD1 = '/WHA';
-local function modloader(msg, editbox)
+local function WHA_modloader(msg, editbox)
 	if msg == 'grep' then
-		reportTable(pasttable, "GUILD");
+		WHA_reportTable(WHA_pasttable, "GUILD");
 	elseif msg == 'irep' then
-		reportTable(pasttable, "RAID");
+		WHA_reportTable(WHA_pasttable, "RAID");
 	elseif msg == 'trep' then
-		reportTable(pasttable, "SAY");
+		WHA_reportTable(WHA_pasttable, "SAY");
 	elseif msg == 'devmode' then
-		devmod = true;
+		WHA_devmod = not WHA_devmod;
+		if(WHA_devmod == true) then
+			print("Dev Mode Enabled");
+		else
+			print("Dev Mode Disabled");
+		end;
 	elseif msg == 'clear' then
-		modloaded = false;
-		raidg = {};
-		debuffs = {};
-		fname = {};
-		pasttable = {};
-		rdbtable = {};
+		WHA_modloaded = false;
+		WHA_raidg = {};
+		WHA_debuffs = {};
+		WHA_fname = {};
+		WHA_pasttable = {};
+		WHA_rdbtable = {};
+	elseif msg == 'exit' then
+		WHA_exitCombat();
+	elseif msg == 'print' then
+		WHA_printTable(WHA_raidg, WHA_debuffs);
 	else
 		print("WoW Hates Aurorra options");
 		print("Type /WHA grep to print your report to your guild");
@@ -214,4 +264,17 @@ local function modloader(msg, editbox)
 		print("Type /WHA clear to clear all values.");
 	end;
 end;
-SlashCmdList["LOADMOD"] = modloader;
+SlashCmdList["LOADMOD"] = WHA_modloader;
+
+function WHA_PPT()
+	WHA_printTable(WHA_pasttable);
+end;
+function WHA_PGT()
+	WHA_reportTable(WHA_pasttable, "GUILD");
+end;
+function WHA_PIT()
+	WHA_reportTable(WHA_pasttable, "RAID");
+end;
+function WHA_BUP(name)
+	WHABoss:SetText(name);
+end;

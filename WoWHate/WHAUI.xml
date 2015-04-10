@@ -1,0 +1,97 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+	<Script file="WowHate.lua"/>
+	<Font name="WHATFont" font="Fonts\FRIZQT__.TTF" virtual="true">
+		<FontHeight>
+			<AbsValue val="12"/>
+		</FontHeight>
+	</Font>
+	<Frame name="WHAFrame" enableMouse="true" movable="true">
+		<Scripts>
+			<OnLoad>self:RegisterForDrag("LeftButton");</OnLoad>
+			<OnDragStart>self:StartMoving();</OnDragStart>
+			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
+		</Scripts>
+		<Size>
+			<AbsDimension x="150" y="100"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture setAllPoints="true">
+					<Color r="1.0" g="0.5" b="0.0" a="0.5" />
+				</Texture>
+			</Layer>
+			<Layer name = "WHATLay">
+				<FontString name = "WHATitle" text="WoW Hates Aurorraa" inherits="WHATFont">
+					<Size x="150" y="20"/>
+					<Anchors>
+						<Anchor point="TOP" relativePoint = "TOP"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer>
+				<FontString name = "WHABoss" text="No Boss" inherits="WHATFont">
+					<Size x="150" y="20"/>
+					<Anchors>
+						<Anchor point="TOP" relativeTo="WHAFrame">
+							<Offset><AbsDimension x="0" y="-12"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+			<Frames>
+	
+	<Button name="WHAPrint" inherits="GameMenuButtonTemplate" text="Print">
+		<Size>
+			<AbsDimension x="100" y="19" />
+		</Size>
+		<Anchors>
+			<Anchor point="BOTTOM" relativeTo="WHABoss">
+				<Offset>
+					<AbsDimension x="0" y="-20" />
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Scripts>
+			<OnClick> WHA_PPT(); </OnClick>
+		</Scripts>
+	</Button>
+	<Button name="WHAGRep" inherits="GameMenuButtonTemplate" text="Guild Report">
+		<Size>
+			<AbsDimension x="100" y="19" />
+		</Size>
+		<Anchors>
+			<Anchor point="BOTTOM" relativeTo="WHAPrint">
+				<Offset>
+					<AbsDimension x="0" y="-20" />
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Scripts>
+			<OnClick> WHA_PGT(); </OnClick>
+		</Scripts>
+	</Button>
+	<Button name="WHAIRep" inherits="GameMenuButtonTemplate" text="Raid Report">
+		<Size>
+			<AbsDimension x="100" y="19" />
+		</Size>
+		<Anchors>
+			<Anchor point="BOTTOM" relativeTo="WHAGRep">
+				<Offset>
+					<AbsDimension x="0" y="-20" />
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Scripts>
+			<OnClick> WHA_PIT(); </OnClick>
+		</Scripts>
+	</Button>
+    </Frames>
+	</Frame>
+</Ui>
+
