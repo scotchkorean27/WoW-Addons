@@ -2,7 +2,7 @@
 ## Title: WoW Hates Aurorraa
 ## Author: Scott Lee
 ## Version: 0.2b
-## Notes: Counts how many times people get targetted by shit.  |nIn honor of Aurorraa-BleedingHollow |n(our priest who got targetted by just about everyting that ever was).
+## Notes: Counts how many times people get targetted by abilities.  |nIn honor of Aurorraa-BleedingHollow |n(our priest who got targetted by just about everyting that ever was).
 
 WHAUI.xml
 WoWHate.lua
