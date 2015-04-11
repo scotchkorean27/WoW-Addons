@@ -131,18 +131,12 @@ local function WHA_exitCombat(self, event, ...)
 	end;
 end;
 
-local function WHA_registerAura(self,event, ...)
-	local timestamp, etype, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount, overkill, school, resisted, blocked, absorbed, critical = select(1, ...);
-	if(WHA_modloaded == false and WHA_incombat == true) then
-		WHATally:Show();
-		WHA_debuffs = {};
-end;
 
 local function WHA_registerAura(self,event, ...)
 	
 	local timestamp, etype, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount, overkill, school, resisted, blocked, absorbed, critical = select(1, ...);
 	if(WHA_modloaded == false and WHA_incombat == true) then
->>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
+		WHATally:Show();
 		if(destName == "Kargath Bladefist") then
 			WHA_debuffs, WHA_fname = WHA_loadKargathModule();
 			WHA_BUP(WHA_fname);
@@ -152,11 +146,7 @@ local function WHA_registerAura(self,event, ...)
 			WHA_BUP(WHA_fname);
 			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
 		elseif(destName == "Marak the Blooded") then
-<<<<<<< HEAD
-			WHA_debuffs, WHA_fname, WHA_SCount = WHA_loadMaidsModule();
-=======
 			WHA_debuffs, WHA_fname = WHA_loadMaidsModule();
->>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 			WHA_BUP(WHA_fname);
 			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
 		elseif(destName == "Operator Thogar") then
@@ -187,29 +177,12 @@ local function WHA_registerAura(self,event, ...)
 			WHA_debuffs, WHA_fname = WHA_loadTestModule();
 			WHA_BUP(WHA_fname);
 			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
-<<<<<<< HEAD
 		else
 			WHATally:Hide();
 		end;
 		WHA_INC();
 	end;
 	if((etype == 'SPELL_AURA_APPLIED' or etype == 'SPELL_AURA_REMOVED') and amount == 'DEBUFF' and WHA_incombat == true and (destName == GetUnitName("player") or UnitInRaid(destName))) then
-=======
-		end;
-	end;
-	if((etype == 'SPELL_AURA_APPLIED' or etype == 'SPELL_AURA_REMOVED') and amount == 'DEBUFF' and WHA_incombat == true and (destName == GetUnitName("player") or UnitInRaid(destName))) then
-		--if(WHA_modloaded == false and etype == 'SPELL_AURA_APPLIED') then
-			--print(destName .. " " .. spellName);
-			--local name, rank, icon, count, dispel, duration, expires, caster, steal, console, ID, canapp, boss, v1, v2, v3 = UnitDebuff(destName, spellName);
-			--responsetime = duration + (GetTime() - expires);
-			--print("response time is" .. responsetime);
-			--WHA_debuffs[ID] = spellName;
-				--print(name .. ID );
-				--if(WHA_raidg[destName][spellName] == nil) then
-					--WHA_raidg[destName][spellName] = 0;
-				--end;
-				--WHA_raidg[destName][spellName] = WHA_raidg[destName][spellName] + 1;
->>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 		if(WHA_modloaded == true) then
 			local name, rank, icon, count, dispel, duration, expires, caster, steal, console, ID, canapp, boss, v1, v2, v3 = UnitDebuff(destName, spellName);
 			if(name ~= nil and WHA_devmod == true) then
@@ -224,10 +197,7 @@ local function WHA_registerAura(self,event, ...)
 				end;
 				WHA_raidg[destName][spellName] = WHA_raidg[destName][spellName] + 1;
 				WHA_rdbtable[destName][spellName] = true;
-<<<<<<< HEAD
 				WHA_UPD();
-=======
->>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 			elseif(name == nil and WHA_rdbtable[destName][spellName] ~= nil and WHA_rdbtable[destName][spellName] == true) then
 				WHA_rdbtable[destName][spellName] = false;
 				if(WHA_devmod == true) then
@@ -251,10 +221,7 @@ local function WHA_enterCombat(self, event, ...)
 	else
 		WHA_raidg = WHA_makeTestTable();
 	end;
-<<<<<<< HEAD
 	WHA_ItVal = nil;
-=======
->>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 end;
 
 local function WHA_chexitCombat()
@@ -314,7 +281,6 @@ function WHA_PIT()
 end;
 function WHA_BUP(name)
 	WHABoss:SetText(name);
-<<<<<<< HEAD
 	WHATBName:SetText(name);
 end;
 function WHA_INC()
@@ -372,6 +338,4 @@ function WHA_UPD()
 	WHATT4:SetText(p4["c"]);
 	WHATP5:SetText(p5["n"]);
 	WHATT5:SetText(p5["c"]);
-=======
->>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 end;

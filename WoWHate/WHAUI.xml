@@ -6,10 +6,7 @@
 		<FontHeight>
 			<AbsValue val="12"/>
 		</FontHeight>
-<<<<<<< HEAD
 		<Color r="0" g="0" b="0" a="1" />
-=======
->>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 	</Font>
 	<Frame name="WHAFrame" enableMouse="true" movable="true">
 		<Scripts>
@@ -26,11 +23,7 @@
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture setAllPoints="true">
-<<<<<<< HEAD
 					<Color r="1.0" g="1" b="1" a="0.5" />
-=======
-					<Color r="1.0" g="0.5" b="0.0" a="0.5" />
->>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 				</Texture>
 			</Layer>
 			<Layer name = "WHATLay">
@@ -52,7 +45,6 @@
 				</FontString>
 			</Layer>
 		</Layers>
-<<<<<<< HEAD
 		<Frames>
 			<Button name="WHAPrint" inherits="GameMenuButtonTemplate" text="Print">
 				<Size>
@@ -255,56 +247,6 @@
 				</Scripts>
 			</Button>
 		</Frames>
-=======
-			<Frames>
-	
-	<Button name="WHAPrint" inherits="GameMenuButtonTemplate" text="Print">
-		<Size>
-			<AbsDimension x="100" y="19" />
-		</Size>
-		<Anchors>
-			<Anchor point="BOTTOM" relativeTo="WHABoss">
-				<Offset>
-					<AbsDimension x="0" y="-20" />
-				</Offset>
-			</Anchor>
-		</Anchors>
-		<Scripts>
-			<OnClick> WHA_PPT(); </OnClick>
-		</Scripts>
-	</Button>
-	<Button name="WHAGRep" inherits="GameMenuButtonTemplate" text="Guild Report">
-		<Size>
-			<AbsDimension x="100" y="19" />
-		</Size>
-		<Anchors>
-			<Anchor point="BOTTOM" relativeTo="WHAPrint">
-				<Offset>
-					<AbsDimension x="0" y="-20" />
-				</Offset>
-			</Anchor>
-		</Anchors>
-		<Scripts>
-			<OnClick> WHA_PGT(); </OnClick>
-		</Scripts>
-	</Button>
-	<Button name="WHAIRep" inherits="GameMenuButtonTemplate" text="Raid Report">
-		<Size>
-			<AbsDimension x="100" y="19" />
-		</Size>
-		<Anchors>
-			<Anchor point="BOTTOM" relativeTo="WHAGRep">
-				<Offset>
-					<AbsDimension x="0" y="-20" />
-				</Offset>
-			</Anchor>
-		</Anchors>
-		<Scripts>
-			<OnClick> WHA_PIT(); </OnClick>
-		</Scripts>
-	</Button>
-    </Frames>
->>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 	</Frame>
 </Ui>
 
