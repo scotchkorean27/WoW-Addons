@@ -6,6 +6,7 @@ WHA_devmod = false;
 WHA_fname = "";
 WHA_incombat = false;
 WHA_modloaded = false;
+local WHA_ItVal = nil;
 local WHA_frame = CreateFrame("FRAME", "WHA_RaidFrame");
 local WHA_frame2 = CreateFrame("FRAME", "WHA_enterframe");
 local WHA_frame3 = CreateFrame("FRAME", "WHA_exitframe");
@@ -48,7 +49,6 @@ local function WHA_makeRaidTable()
 		for i = 1, gnum, 1 do
 		local s = "raid" .. i;
 		local uname = GetUnitName(s, true);
-		--print("Adding entry for: " .. uname);
 		t[uname] = {};
 	end;
 	return t;
@@ -56,7 +56,6 @@ end;
 local function WHA_makeTestTable()
 	local t = {};
 	local uname = UnitName("player");
-	--print("Adding entry for: " .. uname);
 	t[uname] = {};
 	return t;
 end;
@@ -65,11 +64,11 @@ local function WHA_reportTable(raid, channel)
 	for key, value in pairs(raid) do	
 		SendChatMessage("People targetted by: " .. key, channel);
 		for key2, value2 in pairs(value) do
-			if(value2 > 10) then
+			if(value2 > 20) then
 				SendChatMessage(key2 .. ": " .. value2, channel);
 			end;
 		end;
-		for i = 10, 1, -1 do
+		for i = 20, 1, -1 do
 			for key2, value2 in pairs(value) do
 				if(value2 == i) then
 					SendChatMessage(key2 .. ": " .. value2, channel);
@@ -84,11 +83,11 @@ local function WHA_printTable(invraid)
 	for key, value in pairs(invraid) do	
 		print("|cffff0000People targetted by: " .. key);
 		for key2, value2 in pairs(value) do
-			if(value2 > 10) then
+			if(value2 > 20) then
 				print(key2 .. ": " .. value2);
 			end;
 		end;
-		for i = 10, 1, -1 do
+		for i = 20, 1, -1 do
 			for key2, value2 in pairs(value) do
 				if(value2 == i) then
 					print(key2 .. ": " .. value2);
@@ -98,7 +97,17 @@ local function WHA_printTable(invraid)
 		print(" ");
 	end;
 end;
-	
+
+local function WHA_SinDB(raidt, dname)
+	local t5t = {};
+	for player, pdset in pairs(raidt) do
+		if(pdset[dname] ~= nil) then
+			t5t[player] = pdset[dname];
+		end;
+	end;
+	return t5t;
+end;	
+
 local function WHA_makeResult(raid, debuff)
 	
 	local invraid = {};
@@ -120,13 +129,20 @@ local function WHA_exitCombat(self, event, ...)
 		WHA_printTable(WHA_pasttable);
 		WHA_modloaded = false;
 	end;
-	WHA_debuffs = {};
+end;
+
+local function WHA_registerAura(self,event, ...)
+	local timestamp, etype, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount, overkill, school, resisted, blocked, absorbed, critical = select(1, ...);
+	if(WHA_modloaded == false and WHA_incombat == true) then
+		WHATally:Show();
+		WHA_debuffs = {};
 end;
 
 local function WHA_registerAura(self,event, ...)
 	
 	local timestamp, etype, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount, overkill, school, resisted, blocked, absorbed, critical = select(1, ...);
 	if(WHA_modloaded == false and WHA_incombat == true) then
+>>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 		if(destName == "Kargath Bladefist") then
 			WHA_debuffs, WHA_fname = WHA_loadKargathModule();
 			WHA_BUP(WHA_fname);
@@ -136,7 +152,11 @@ local function WHA_registerAura(self,event, ...)
 			WHA_BUP(WHA_fname);
 			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
 		elseif(destName == "Marak the Blooded") then
+<<<<<<< HEAD
+			WHA_debuffs, WHA_fname, WHA_SCount = WHA_loadMaidsModule();
+=======
 			WHA_debuffs, WHA_fname = WHA_loadMaidsModule();
+>>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 			WHA_BUP(WHA_fname);
 			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
 		elseif(destName == "Operator Thogar") then
@@ -167,6 +187,14 @@ local function WHA_registerAura(self,event, ...)
 			WHA_debuffs, WHA_fname = WHA_loadTestModule();
 			WHA_BUP(WHA_fname);
 			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
+<<<<<<< HEAD
+		else
+			WHATally:Hide();
+		end;
+		WHA_INC();
+	end;
+	if((etype == 'SPELL_AURA_APPLIED' or etype == 'SPELL_AURA_REMOVED') and amount == 'DEBUFF' and WHA_incombat == true and (destName == GetUnitName("player") or UnitInRaid(destName))) then
+=======
 		end;
 	end;
 	if((etype == 'SPELL_AURA_APPLIED' or etype == 'SPELL_AURA_REMOVED') and amount == 'DEBUFF' and WHA_incombat == true and (destName == GetUnitName("player") or UnitInRaid(destName))) then
@@ -181,6 +209,7 @@ local function WHA_registerAura(self,event, ...)
 					--WHA_raidg[destName][spellName] = 0;
 				--end;
 				--WHA_raidg[destName][spellName] = WHA_raidg[destName][spellName] + 1;
+>>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 		if(WHA_modloaded == true) then
 			local name, rank, icon, count, dispel, duration, expires, caster, steal, console, ID, canapp, boss, v1, v2, v3 = UnitDebuff(destName, spellName);
 			if(name ~= nil and WHA_devmod == true) then
@@ -195,6 +224,10 @@ local function WHA_registerAura(self,event, ...)
 				end;
 				WHA_raidg[destName][spellName] = WHA_raidg[destName][spellName] + 1;
 				WHA_rdbtable[destName][spellName] = true;
+<<<<<<< HEAD
+				WHA_UPD();
+=======
+>>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 			elseif(name == nil and WHA_rdbtable[destName][spellName] ~= nil and WHA_rdbtable[destName][spellName] == true) then
 				WHA_rdbtable[destName][spellName] = false;
 				if(WHA_devmod == true) then
@@ -218,6 +251,10 @@ local function WHA_enterCombat(self, event, ...)
 	else
 		WHA_raidg = WHA_makeTestTable();
 	end;
+<<<<<<< HEAD
+	WHA_ItVal = nil;
+=======
+>>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 end;
 
 local function WHA_chexitCombat()
@@ -277,4 +314,64 @@ function WHA_PIT()
 end;
 function WHA_BUP(name)
 	WHABoss:SetText(name);
+<<<<<<< HEAD
+	WHATBName:SetText(name);
+end;
+function WHA_INC()
+	local did, dname = next(WHA_debuffs, WHA_ItVal);
+	WHA_ItVal = did;
+	if(WHA_ItVal == nil) then
+		did, dname = next(WHA_debuffs, WHA_ItVal);
+		WHA_ItVal = did;
+	end;
+	WHA_UPD();
+	
+end;
+function WHA_UPD()
+	dname = WHA_debuffs[WHA_ItVal];
+	local t5t = WHA_SinDB(WHA_raidg, dname);
+	p1 = {["n"] = "Player 1", ["c"] = 0};
+	p2 = {["n"] = "Player 2", ["c"] = 0};
+	p3 = {["n"] = "Player 3", ["c"] = 0};
+	p4 = {["n"] = "Player 4", ["c"] = 0};
+	p5 = {["n"] = "Player 5", ["c"] = 0};
+	if(t5t ~= nil) then
+		for pname, co in pairs(t5t) do
+			if(co > p1["c"]) then
+				p5 = p4;
+				p4 = p3;
+				p3 = p2;
+				p2 = p1;
+				p1 = {["n"] = pname, ["c"] = co};
+			elseif(co > p2["c"]) then
+				p5 = p4;
+				p4 = p3;
+				p3 = p2;
+				p2 = {["n"] = pname, ["c"] = co};
+			elseif(co > p3["c"]) then
+				p5 = p4;
+				p4 = p3;
+				p3 = {["n"] = pname, ["c"] = co};
+			elseif(co > p4["c"]) then
+				p5 = p4;
+				p4 = {["n"] = pname, ["c"] = co};
+			elseif(co > p5["c"]) then
+				p5 = {["n"] = pname, ["c"] = co};
+			end;
+		end;
+		
+	end;
+	WHATSName:SetText(dname);
+	WHATP1:SetText(p1["n"]);
+	WHATT1:SetText(p1["c"]);
+	WHATP2:SetText(p2["n"]);
+	WHATT2:SetText(p2["c"]);
+	WHATP3:SetText(p3["n"]);
+	WHATT3:SetText(p3["c"]);
+	WHATP4:SetText(p4["n"]);
+	WHATT4:SetText(p4["c"]);
+	WHATP5:SetText(p5["n"]);
+	WHATT5:SetText(p5["c"]);
+=======
+>>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 end;

@@ -6,6 +6,10 @@
 		<FontHeight>
 			<AbsValue val="12"/>
 		</FontHeight>
+<<<<<<< HEAD
+		<Color r="0" g="0" b="0" a="1" />
+=======
+>>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 	</Font>
 	<Frame name="WHAFrame" enableMouse="true" movable="true">
 		<Scripts>
@@ -22,7 +26,11 @@
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture setAllPoints="true">
+<<<<<<< HEAD
+					<Color r="1.0" g="1" b="1" a="0.5" />
+=======
 					<Color r="1.0" g="0.5" b="0.0" a="0.5" />
+>>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 				</Texture>
 			</Layer>
 			<Layer name = "WHATLay">
@@ -44,6 +52,210 @@
 				</FontString>
 			</Layer>
 		</Layers>
+<<<<<<< HEAD
+		<Frames>
+			<Button name="WHAPrint" inherits="GameMenuButtonTemplate" text="Print">
+				<Size>
+					<AbsDimension x="100" y="19" />
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="WHABoss">
+						<Offset>
+							<AbsDimension x="0" y="-20" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> WHA_PPT(); </OnClick>
+				</Scripts>
+			</Button>
+			<Button name="WHAGRep" inherits="GameMenuButtonTemplate" text="Guild Report">
+				<Size>
+					<AbsDimension x="100" y="19" />
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="WHAPrint">
+						<Offset>
+							<AbsDimension x="0" y="-20" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> WHA_PGT(); </OnClick>
+				</Scripts>
+			</Button>
+			<Button name="WHAIRep" inherits="GameMenuButtonTemplate" text="Raid Report">
+				<Size>
+					<AbsDimension x="100" y="19" />
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="WHAGRep">
+						<Offset>
+							<AbsDimension x="0" y="-20" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> WHA_PIT(); </OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Frame>
+	<Frame name = "WHATally" enableMouse = "true" movable = "true" hidden = "true">
+		<Scripts>
+			<OnLoad>self:RegisterForDrag("LeftButton");</OnLoad>
+			<OnDragStart>self:StartMoving();</OnDragStart>
+			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
+		</Scripts>
+		<Size>
+			<AbsDimension x="150" y="110"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture setAllPoints="true">
+					<Color r="1.0" g="1" b="1" a="0.5" />
+				</Texture>
+			</Layer>
+			<Layer name = "WHATallyL">
+				<FontString name = "WHATBName" text="Penetrating Shot" inherits="WHATFont">
+					<Size x="150" y="20"/>
+					<Anchors>
+						<Anchor point="TOP" relativePoint = "TOP"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer>
+				<FontString name = "WHATSName" text="No Boss" inherits="WHATFont" justifyH = "LEFT">
+					<Size x="130" y="20"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="WHATBName">
+							<Offset><AbsDimension x="10" y="-18"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer>
+				<FontString name = "WHATP1" text="Player1" inherits="WHATFont" justifyH = "LEFT">
+					<Size x="130" y="20"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="WHATSName">
+							<Offset><AbsDimension x="0" y="-20"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer>
+				<FontString name = "WHATT1" text="0" inherits="WHATFont" justifyH = "LEFT">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativeTo="WHATP1">
+							<Offset><AbsDimension x="0" y="0"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer>
+				<FontString name = "WHATP2" text="Player2" inherits="WHATFont" justifyH = "LEFT">
+					<Size x="130" y="20"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="WHATP1">
+							<Offset><AbsDimension x="0" y="-12"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer>
+				<FontString name = "WHATT2" text="0" inherits="WHATFont" justifyH = "LEFT">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativeTo="WHATP2">
+							<Offset><AbsDimension x="0" y="0"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer>
+				<FontString name = "WHATP3" text="Player3" inherits="WHATFont" justifyH = "LEFT">
+					<Size x="130" y="20"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="WHATP2">
+							<Offset><AbsDimension x="0" y="-12"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer>
+				<FontString name = "WHATT3" text="0" inherits="WHATFont" justifyH = "LEFT">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativeTo="WHATP3">
+							<Offset><AbsDimension x="0" y="0"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer>
+				<FontString name = "WHATP4" text="Player4" inherits="WHATFont" justifyH = "LEFT">
+					<Size x="130" y="20"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="WHATP3">
+							<Offset><AbsDimension x="0" y="-12"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer>
+				<FontString name = "WHATT4" text="0" inherits="WHATFont" justifyH = "LEFT">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativeTo="WHATP4">
+							<Offset><AbsDimension x="0" y="0"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer>
+				<FontString name = "WHATP5" text="Player5" inherits="WHATFont" justifyH = "LEFT">
+					<Size x="130" y="20"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="WHATP4">
+							<Offset><AbsDimension x="0" y="-12"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer>
+				<FontString name = "WHATT5" text="0" inherits="WHATFont" justifyH = "LEFT">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativeTo="WHATP5">
+							<Offset><AbsDimension x="0" y="0"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="WHATNext" inherits="GameMenuButtonTemplate" text="->">
+				<Size>
+					<AbsDimension x="15" y="15" />
+				</Size>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="WHATSName">
+						<Offset>
+							<AbsDimension x="0" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> WHA_INC(); </OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+=======
 			<Frames>
 	
 	<Button name="WHAPrint" inherits="GameMenuButtonTemplate" text="Print">
@@ -92,6 +304,7 @@
 		</Scripts>
 	</Button>
     </Frames>
+>>>>>>> b4d5d09871d7a453ef9fa6db1b7322e874f60adc
 	</Frame>
 </Ui>
 
