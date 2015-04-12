@@ -8,14 +8,14 @@
 		</FontHeight>
 		<Color r="0" g="0" b="0" a="1" />
 	</Font>
-	<Frame name="WHAFrame" enableMouse="true" movable="true">
+	<Frame name = "WHATally" enableMouse = "true" movable = "true" hidden = "false">
 		<Scripts>
 			<OnLoad>self:RegisterForDrag("LeftButton");</OnLoad>
 			<OnDragStart>self:StartMoving();</OnDragStart>
 			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
 		</Scripts>
 		<Size>
-			<AbsDimension x="150" y="100"/>
+			<AbsDimension x="150" y="160"/>
 		</Size>
 		<Anchors>
 			<Anchor point="CENTER"/>
@@ -34,93 +34,18 @@
 					</Anchors>
 				</FontString>
 			</Layer>
-			<Layer>
-				<FontString name = "WHABoss" text="No Boss" inherits="WHATFont">
+			<Layer name = "WHATallyL">
+				<FontString name = "WHATBName" text="Boss" inherits="WHATFont">
 					<Size x="150" y="20"/>
 					<Anchors>
-						<Anchor point="TOP" relativeTo="WHAFrame">
-							<Offset><AbsDimension x="0" y="-12"/></Offset>
+						<Anchor point="BOTTOMLEFT" relativeTo="WHATitle">
+							<Offset><AbsDimension x="0" y="-15"/></Offset>
 						</Anchor>
 					</Anchors>
 				</FontString>
 			</Layer>
-		</Layers>
-		<Frames>
-			<Button name="WHAPrint" inherits="GameMenuButtonTemplate" text="Print">
-				<Size>
-					<AbsDimension x="100" y="19" />
-				</Size>
-				<Anchors>
-					<Anchor point="BOTTOM" relativeTo="WHABoss">
-						<Offset>
-							<AbsDimension x="0" y="-20" />
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick> WHA_PPT(); </OnClick>
-				</Scripts>
-			</Button>
-			<Button name="WHAGRep" inherits="GameMenuButtonTemplate" text="Guild Report">
-				<Size>
-					<AbsDimension x="100" y="19" />
-				</Size>
-				<Anchors>
-					<Anchor point="BOTTOM" relativeTo="WHAPrint">
-						<Offset>
-							<AbsDimension x="0" y="-20" />
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick> WHA_PGT(); </OnClick>
-				</Scripts>
-			</Button>
-			<Button name="WHAIRep" inherits="GameMenuButtonTemplate" text="Raid Report">
-				<Size>
-					<AbsDimension x="100" y="19" />
-				</Size>
-				<Anchors>
-					<Anchor point="BOTTOM" relativeTo="WHAGRep">
-						<Offset>
-							<AbsDimension x="0" y="-20" />
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick> WHA_PIT(); </OnClick>
-				</Scripts>
-			</Button>
-		</Frames>
-	</Frame>
-	<Frame name = "WHATally" enableMouse = "true" movable = "true" hidden = "true">
-		<Scripts>
-			<OnLoad>self:RegisterForDrag("LeftButton");</OnLoad>
-			<OnDragStart>self:StartMoving();</OnDragStart>
-			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
-		</Scripts>
-		<Size>
-			<AbsDimension x="150" y="110"/>
-		</Size>
-		<Anchors>
-			<Anchor point="CENTER"/>
-		</Anchors>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture setAllPoints="true">
-					<Color r="1.0" g="1" b="1" a="0.5" />
-				</Texture>
-			</Layer>
-			<Layer name = "WHATallyL">
-				<FontString name = "WHATBName" text="Penetrating Shot" inherits="WHATFont">
-					<Size x="150" y="20"/>
-					<Anchors>
-						<Anchor point="TOP" relativePoint = "TOP"/>
-					</Anchors>
-				</FontString>
-			</Layer>
 			<Layer>
-				<FontString name = "WHATSName" text="No Boss" inherits="WHATFont" justifyH = "LEFT">
+				<FontString name = "WHATSName" text="Skill" inherits="WHATFont" justifyH = "LEFT">
 					<Size x="130" y="20"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="WHATBName">
@@ -229,6 +154,16 @@
 					</Anchors>
 				</FontString>
 			</Layer>
+			<Layer>
+				<FontString name = "WHATRep" text="Report" inherits="WHATFont">
+					<Size x="130" y="20"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="WHATP5">
+							<Offset><AbsDimension x="0" y="-16"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
 		</Layers>
 		<Frames>
 			<Button name="WHATNext" inherits="GameMenuButtonTemplate" text="->">
@@ -244,6 +179,51 @@
 				</Anchors>
 				<Scripts>
 					<OnClick> WHA_INC(); </OnClick>
+				</Scripts>
+			</Button>
+			<Button name="WHAPrint" inherits="GameMenuButtonTemplate" text="Self">
+				<Size>
+					<AbsDimension x="45" y="19" />
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="WHATRep">
+						<Offset>
+							<AbsDimension x="-2" y="-20" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> WHA_PPT(); </OnClick>
+				</Scripts>
+			</Button>
+			<Button name="WHAGRep" inherits="GameMenuButtonTemplate" text="Guild">
+				<Size>
+					<AbsDimension x="45" y="19" />
+				</Size>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="WHAPrint">
+						<Offset>
+							<AbsDimension x="45" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> WHA_PGT(); </OnClick>
+				</Scripts>
+			</Button>
+			<Button name="WHAIRep" inherits="GameMenuButtonTemplate" text="Raid">
+				<Size>
+					<AbsDimension x="45" y="19" />
+				</Size>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="WHAGRep">
+						<Offset>
+							<AbsDimension x="45" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> WHA_PIT(); </OnClick>
 				</Scripts>
 			</Button>
 		</Frames>

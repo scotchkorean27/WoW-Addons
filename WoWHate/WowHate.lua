@@ -141,46 +141,55 @@ local function WHA_registerAura(self,event, ...)
 			WHA_debuffs, WHA_fname = WHA_loadKargathModule();
 			WHA_BUP(WHA_fname);
 			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
+			WHA_INC();
 		elseif(destName == "Blackhand") then
 			WHA_debuffs, WHA_fname = WHA_loadBlackHandModule();
 			WHA_BUP(WHA_fname);
 			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
+			WHA_INC();
 		elseif(destName == "Marak the Blooded") then
 			WHA_debuffs, WHA_fname = WHA_loadMaidsModule();
 			WHA_BUP(WHA_fname);
 			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
+			WHA_INC();
 		elseif(destName == "Operator Thogar") then
 			WHA_debuffs, WHA_fname = WHA_loadOperatorModule();
 			WHA_BUP(WHA_fname);
 			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
+			WHA_INC();
 		elseif(destName == "Beastlord Darmac") then
 			WHA_debuffs, WHA_fname = WHA_loadBeastLordModule();
 			WHA_BUP(WHA_fname);
 			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
+			WHA_INC();
 		elseif(destName == "Flamebender Ka'graz") then
 			WHA_debuffs, WHA_fname = WHA_loadFlameBenderModule();
 			WHA_BUP(WHA_fname);
 			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
+			WHA_INC();
 		elseif(destName == "Gruul") then
 			WHA_debuffs, WHA_fname = WHA_loadGruulModule();
 			WHA_BUP(WHA_fname);
 			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
+			WHA_INC();
 		elseif(destName == "Foreman Feldspar") then
 			WHA_debuffs, WHA_fname = WHA_loadBFurnModule();
 			WHA_BUP(WHA_fname);
 			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
+			WHA_INC();
 		elseif(destName == "Tectus") then
 			WHA_debuffs, WHA_fname = WHA_loadTectusModule();
 			WHA_BUP(WHA_fname);
 			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
-		elseif(destName == "Dungeoneer's Training Dummy") then
+			WHA_INC();
+		elseif(destName == "Dungeoneer's Training Dummy" and WHA_devmod == true) then
 			WHA_debuffs, WHA_fname = WHA_loadTestModule();
 			WHA_BUP(WHA_fname);
 			WHA_rdbtable = WHA_buildRDBTable(WHA_raidg, WHA_debuffs);
+			WHA_INC();
 		else
 			WHATally:Hide();
 		end;
-		WHA_INC();
 	end;
 	if((etype == 'SPELL_AURA_APPLIED' or etype == 'SPELL_AURA_REMOVED') and amount == 'DEBUFF' and WHA_incombat == true and (destName == GetUnitName("player") or UnitInRaid(destName))) then
 		if(WHA_modloaded == true) then
@@ -280,7 +289,6 @@ function WHA_PIT()
 	WHA_reportTable(WHA_pasttable, "RAID");
 end;
 function WHA_BUP(name)
-	WHABoss:SetText(name);
 	WHATBName:SetText(name);
 end;
 function WHA_INC()
@@ -295,47 +303,48 @@ function WHA_INC()
 end;
 function WHA_UPD()
 	dname = WHA_debuffs[WHA_ItVal];
-	local t5t = WHA_SinDB(WHA_raidg, dname);
-	p1 = {["n"] = "Player 1", ["c"] = 0};
-	p2 = {["n"] = "Player 2", ["c"] = 0};
-	p3 = {["n"] = "Player 3", ["c"] = 0};
-	p4 = {["n"] = "Player 4", ["c"] = 0};
-	p5 = {["n"] = "Player 5", ["c"] = 0};
-	if(t5t ~= nil) then
-		for pname, co in pairs(t5t) do
-			if(co > p1["c"]) then
-				p5 = p4;
-				p4 = p3;
-				p3 = p2;
-				p2 = p1;
-				p1 = {["n"] = pname, ["c"] = co};
-			elseif(co > p2["c"]) then
-				p5 = p4;
-				p4 = p3;
-				p3 = p2;
-				p2 = {["n"] = pname, ["c"] = co};
-			elseif(co > p3["c"]) then
-				p5 = p4;
-				p4 = p3;
-				p3 = {["n"] = pname, ["c"] = co};
-			elseif(co > p4["c"]) then
-				p5 = p4;
-				p4 = {["n"] = pname, ["c"] = co};
-			elseif(co > p5["c"]) then
-				p5 = {["n"] = pname, ["c"] = co};
-			end;
+	if(WHA_modloaded == true or WHA_pasttable[dname] ~= nil) then
+		local t5t = WHA_SinDB(WHA_raidg, dname);
+		p1 = {["n"] = "Player 1", ["c"] = 0};
+		p2 = {["n"] = "Player 2", ["c"] = 0};
+		p3 = {["n"] = "Player 3", ["c"] = 0};
+		p4 = {["n"] = "Player 4", ["c"] = 0};
+		p5 = {["n"] = "Player 5", ["c"] = 0};
+		if(t5t ~= nil) then
+			for pname, co in pairs(t5t) do
+				if(co > p1["c"]) then
+					p5 = p4;
+					p4 = p3;
+					p3 = p2;
+					p2 = p1;
+					p1 = {["n"] = pname, ["c"] = co};
+				elseif(co > p2["c"]) then
+					p5 = p4;
+					p4 = p3;
+					p3 = p2;
+					p2 = {["n"] = pname, ["c"] = co};
+				elseif(co > p3["c"]) then
+					p5 = p4;
+					p4 = p3;
+					p3 = {["n"] = pname, ["c"] = co};
+				elseif(co > p4["c"]) then
+					p5 = p4;
+					p4 = {["n"] = pname, ["c"] = co};
+				elseif(co > p5["c"]) then
+					p5 = {["n"] = pname, ["c"] = co};
+				end;
+			end;	
 		end;
-		
+		WHATP1:SetText(strsub(p1["n"], 1, 13));
+		WHATT1:SetText(p1["c"]);
+		WHATP2:SetText(strsub(p2["n"], 1, 13));
+		WHATT2:SetText(p2["c"]);
+		WHATP3:SetText(strsub(p3["n"], 1, 13));
+		WHATT3:SetText(p3["c"]);
+		WHATP4:SetText(strsub(p4["n"], 1, 13));
+		WHATT4:SetText(p4["c"]);
+		WHATP5:SetText(strsub(p5["n"], 1, 13));
+		WHATT5:SetText(p5["c"]);
 	end;
 	WHATSName:SetText(dname);
-	WHATP1:SetText(p1["n"]);
-	WHATT1:SetText(p1["c"]);
-	WHATP2:SetText(p2["n"]);
-	WHATT2:SetText(p2["c"]);
-	WHATP3:SetText(p3["n"]);
-	WHATT3:SetText(p3["c"]);
-	WHATP4:SetText(p4["n"]);
-	WHATT4:SetText(p4["c"]);
-	WHATP5:SetText(p5["n"]);
-	WHATT5:SetText(p5["c"]);
 end;
