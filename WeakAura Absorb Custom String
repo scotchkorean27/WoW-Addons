@@ -1,0 +1,15 @@
+function () 
+    local value=UnitGetTotalAbsorbs("player") or 0 
+    if value then
+        if(value > 999999) then 
+            value = math.floor(value/10000)
+            local string = math.floor(value/100) .. "." .. (value % 100) .. "M"
+            return string
+        elseif(value > 999) then 
+            value = math.floor(value/1000) .. "K" 
+        return(value)
+        else 
+            return 0
+        end
+    end
+end
